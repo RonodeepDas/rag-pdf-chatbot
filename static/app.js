@@ -5,6 +5,7 @@ const askBtn = document.getElementById("askBtn");
 const fileInput = document.getElementById("pdfFile");
 const questionInput = document.getElementById("question");
 
+const API_BASE_URL = "https://rag-pdf-chatbot-bgwi.onrender.com";
 let uploaded = false;
 
 uploadBtn.addEventListener("click", async () => {
@@ -19,7 +20,7 @@ uploadBtn.addEventListener("click", async () => {
 
   statusBox.textContent = "Processing PDF...";
   try {
-    const res = await fetch("/api/process", {
+    const res = await fetch(`${API_BASE_URL}/api/process`, {
       method: "POST",
       body: formData,
     });
@@ -51,7 +52,7 @@ askBtn.addEventListener("click", async () => {
 
   responseBox.textContent = "Thinking...";
   try {
-    const res = await fetch("/api/ask", {
+    const res = await fetch(`${API_BASE_URL}/api/ask`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ question }),

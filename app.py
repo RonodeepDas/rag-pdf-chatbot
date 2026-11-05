@@ -86,6 +86,11 @@ def index():
     return FileResponse(STATIC_DIR / "index.html")
 
 
+@app.get("/app.js")
+def app_javascript():
+    return FileResponse(STATIC_DIR / "app.js", media_type="text/javascript")
+
+
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 
