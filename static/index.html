@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RAG PDF Chatbot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f5f7fb;
+        color: #1f2937;
+      }
+      .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        padding: 24px;
+        margin-bottom: 18px;
+      }
+      h1 {
+        margin-top: 0;
+      }
+      input,
+      textarea,
+      button {
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        font-size: 16px;
+      }
+      button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #1d4ed8;
+      }
+      #response {
+        white-space: pre-wrap;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 16px;
+      }
+      .tiny {
+        font-size: 14px;
+        color: #475569;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>RAG PDF Chatbot</h1>
+      <p class="tiny">Upload a PDF and ask a question about it.</p>
+
+      <label for="pdfFile">Upload PDF</label>
+      <input id="pdfFile" type="file" accept="application/pdf" />
+      <button id="uploadBtn">Process PDF</button>
+      <p id="status" class="tiny">No document loaded yet.</p>
+    </div>
+
+    <div class="card">
+      <label for="question">Ask a question</label>
+      <textarea
+        id="question"
+        rows="4"
+        placeholder="Example: What is the main idea of this document?"
+      ></textarea>
+      <button id="askBtn">Ask</button>
+      <div id="response" style="margin-top: 16px">Answer will appear here.</div>
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
