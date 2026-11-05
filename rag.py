@@ -9,7 +9,7 @@ from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 
 MODEL_NAME = "all-MiniLM-L6-v2"
-LLM_MODEL = "gemini-2.5-flash"
+LLM_MODEL = "gemini-3.8-flash"
 
 model = SentenceTransformer(MODEL_NAME)
 
