@@ -4,12 +4,15 @@ from typing import Any, Iterable, List
 import faiss
 import numpy as np
 from google import genai
+from google.genai.errors import APIError
 from google.genai import types
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 
 MODEL_NAME = "all-MiniLM-L6-v2"
-LLM_MODEL = "gemini-3.8-flash"
+LLM_MODEL = "gemini-3.5-flash-lite"
+FALLBACK_LLM_MODEL = "gemini-3.8-flash"
+TRANSIENT_GEMINI_CODES = {429, 500, 502, 503, 504}
 
 model = SentenceTransformer(MODEL_NAME)
 
@@ -89,12 +92,20 @@ def answer(question: str, retrieved: List[dict[str, Any]]) -> str:
         "Be concise and mention page numbers when useful."
     )
 
-    response = client.models.generate_content(
-        model=LLM_MODEL,
-        contents=f"Context:\n{context}\n\nQuestion: {question}",
-        config=types.GenerateContentConfig(
-            system_instruction=system_instruction,
-            temperature=0.1,
-        ),
+    config = types.GenerateContentConfig(
+        system_instruction=system_instruction,
+        temperature=0.1,
     )
-    return response.text
+    contents = f"Context:\n{context}\n\nQuestion: {question}"
+
+    for model_name in (LLM_MODEL, FALLBACK_LLM_MODEL):
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=contents,
+                config=config,
+            )
+            return response.text
+        except APIError as exc:
+            if model_name == FALLBACK_LLM_MODEL or exc.code not in TRANSIENT_GEMINI_CODES:
+                raise

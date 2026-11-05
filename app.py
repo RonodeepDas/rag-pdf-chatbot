@@ -6,6 +6,7 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from google.genai.errors import APIError
 from pydantic import BaseModel
 
 load_dotenv()
@@ -75,6 +76,13 @@ def ask(payload: AskRequest):
         response = answer(payload.question, hits)
         pages = sorted({chunk["page"] for chunk in hits})
         return {"answer": response, "pages": pages}
+    except APIError as exc:
+        if exc.code in {429, 500, 502, 503, 504}:
+            raise HTTPException(
+                status_code=503,
+                detail="The AI service is temporarily busy. Please try again shortly.",
+            ) from exc
+        raise HTTPException(status_code=502, detail="The AI provider rejected the request.") from exc
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
