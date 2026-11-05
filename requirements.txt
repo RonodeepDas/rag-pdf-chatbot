@@ -1,8 +1,10 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
 fastapi
 uvicorn
 python-dotenv
 pypdf
 sentence-transformers
+torch==2.15.0+cpu
 faiss-cpu
 google-genai
 python-multipart
