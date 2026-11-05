@@ -122,6 +122,21 @@ python app.py
 
 Open the local Gradio URL shown in the terminal, upload a PDF, and ask questions about it.
 
+## Hugging Face Spaces deployment
+
+1. Create a public Hugging Face Space.
+2. Choose the Gradio SDK.
+3. In the Space settings, add a secret named `GEMINI_API_KEY`.
+4. Upload or push these files:
+   - `app.py`
+   - `rag.py`
+   - `requirements.txt`
+   - `.env.example` (optional for repo reference, not required on Spaces)
+   - `sample.pdf` for testing
+5. Keep the app running on port 7860, which is the default for Gradio on Spaces.
+
+This project is already configured to run correctly in a Hugging Face Gradio Space with `server_name="0.0.0.0"` and `server_port=7860`.
+
 ## How it works
 
 ### 1. Load the PDF
